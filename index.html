@@ -1,0 +1,180 @@
+CraftConnect - Features & Workflow
+Platform Overview
+CraftConnect is a direct-to-artisan marketplace that eliminates middlemen. Buyers connect directly with artisans, negotiate pricing, and complete transactions independently. The platform facilitates discovery, communication, and trust — not payments.
+###################################################################
+
+Core Features
+1. User Roles
+Role	Capabilities
+Buyer	Browse marketplace, search/filter products, add to wishlist, contact artists, view orders
+Artist/Artisan	Upload/manage artworks, view orders, see expected orders (wishlisted items), manage profile, contact buyers
+
+##########################################################################
+2. Authentication & Security
+OTP Email Verification — Email verified before account activation
+
+JWT Token Authentication — Secure session management
+
+Role-Based Access — Protected routes for buyers and artists
+
+Password Requirements — 8+ chars, uppercase, lowercase, number
+
+##############################################################################
+3. Marketplace
+Feature	Description
+Category Filtering	18 craft types (Painting, Textile, Pottery, Jewelry, etc.)
+Search	Real-time search from navbar → filters marketplace
+Product Cards	Images, pricing, artist info, discount badges, featured badges
+Wishlist Toggle	Heart button on each product card
+Contact Artist	Modal with full artist details (email, phone, address, social links)
+URL Navigation	Homepage categories link directly to filtered marketplace
+
+##################################################################################
+4. Wishlist & Expected Orders System
+text
+┌─────────────┐         ┌──────────────────┐         ┌─────────────┐
+│   BUYER     │         │    PLATFORM      │         │   ARTIST    │
+├─────────────┤         ├──────────────────┤         ├─────────────┤
+│             │  Add to │                  │  Shows  │             │
+│ Browses     │────────→│   Wishlist DB    │────────→│  Expected   │
+│ Marketplace │         │                  │         │  Orders Tab │
+│             │         └──────────────────┘         │             │
+│             │                                      │  Sees buyer │
+│             │                                      │  details &  │
+│             │                                      │  product    │
+│             │                                      │             │
+│             │         ┌──────────────────┐         │  Clicks     │
+│             │         │   Order Created  │←────────│  "Accept    │
+│             │         │   (COD/Pending)  │         │   Order"    │
+│             │         └────────┬─────────┘         │             │
+│             │                  │                   │             │
+│  Sees order │←─────────────────┘                   │  Contacts   │
+│  in Orders  │                                      │  buyer via  │
+│             │                                      │  phone/email│
+│  Contacts   │                                      │             │
+│  artist     │←───────── Direct Communication ─────→│             │
+│             │                                      │             │
+│  Pays via   │                                      │  Ships      │
+│  UPI/Bank   │                                      │  product    │
+│  Transfer   │                                      │             │
+└─────────────┘                                      └─────────────┘
+No platform payment processing — all payments handled directly between buyer and artist.
+
+##########################################################################################
+
+5. Artist Dashboard
+Tab	Features
+My Artworks	CRUD operations, image upload, pricing, stock management, discount
+Orders	View confirmed orders with status tracking
+Expected Orders	See who wishlisted your products, buyer contact info, accept/reject
+Profile Info	Quick profile editing with link to full settings
+
+######################################################################################
+6. Homepage
+Section	Content
+Hero	Brand message, CTA buttons (Explore Marketplace, Join as Artisan)
+How It Works	4-step flow: Browse → Wishlist → Contact → Deal
+Category Grid	6 clickable categories with gradient overlays
+Dynamic Artworks	Real products grouped by category, fetched from API
+Trust Badges	Verified Artisans, Direct Shipping, Fair Trade
+CTA	Final call-to-action to join or shop
+
+########################################################################################
+7. Footer
+Column	Links
+Brand	Logo, description, social icons (Instagram, Facebook, YouTube)
+Quick Links	Marketplace, Artisans, Learning Hub
+Support	FAQs, Privacy Policy, Terms of Service, Contact Us
+For Artists	Become an Artisan, Dashboard, Marketplace
+Contact	Email, Phone, Location — all displayed
+All footer link pages (FAQ, Privacy, Terms, Contact) have full content.
+
+
+#########################################################################################
+8. Artisan Directory
+Search by name or craft
+
+Filter by craft type and region
+
+Compact cards with avatar, craft type, location
+
+View Profile and Contact buttons (phone + email)
+
+Connects to registration for new artisans
+
+##########################################################################################
+9. Registration Flow
+text
+User visits Register Page
+        │
+        ▼
+Selects Role: Buyer or Artisan
+        │
+        ▼
+Fills: Name, Email, Password
+        │
+        ▼
+Clicks "Verify" → OTP sent to email
+        │
+        ▼
+Enters OTP → Email Verified ✓
+        │
+        ▼
+Agrees to Terms & Privacy
+        │
+        ▼
+Clicks "Create Account"
+        │
+        ▼
+┌───────┴───────┐
+│               │
+Buyer          Artisan
+│               │
+Redirect to    Redirect to
+Homepage       Onboarding Form
+10. Order Flow (End-to-End)
+Step	Actor	Action
+1	Buyer	Browses marketplace, adds product to wishlist
+2	Artist	Sees product in "Expected Orders" tab with buyer details
+3	Artist	Calls/emails buyer to discuss pricing, customization, shipping
+4	Artist	Clicks "Accept Order" → Order created with COD payment method
+5	Buyer	Sees order in Orders page with artist contact info
+
+7	Artist	Ships product, updates order status
+8	Buyer	Receives product, order marked as delivered
+
+####################################################################################
+11. Image Management
+Feature	Implementation
+Upload	Multer disk storage → saved to /uploads/
+Serving	express.static serves /uploads folder
+URL Handling	Helper prepends http://localhost:5000 to relative paths
+Product Images	Multiple images per product, primary image selection
+Profile Avatars	Single avatar upload, stored in /uploads/avatars/
+
+#####################################################################################
+12. Technical Features
+Feature	Details
+Global Categories	config/categories.js — single source of truth for 18 craft types
+Image URL Helper	getImageUrl() function prepends backend URL for local images
+User-Specific Cart	localStorage keyed by user_{userId}_cart
+Role Normalization	AuthContext auto-adds userType from role on restore
+Error Handling	Async handler wrapper, consistent error responses
+Pagination	API features class for filtering, sorting, pagination
+Animations	Framer Motion for page transitions, hover effects, scroll reveals
+Quick Reference: URL Routes
+Page	URL
+Home	/
+Marketplace	/marketplace
+Marketplace (filtered)	/marketplace?category=Pottery
+Artisan Directory	/artisans
+Login	/login
+Register	/register
+Profile/Dashboard	/profile
+Wishlist	/wishlist
+Cart	/cart
+Orders	/orders
+FAQ	/faq
+Privacy	/privacy
+Terms	/terms
+Contact	/contact
